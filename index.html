@@ -4,206 +4,267 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Q&A 간담회</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden}
-body{font-family:'Noto Sans KR',sans-serif;background:#4a2c0e}
+body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
  
+/* ─── BOARD ─── */
 #board{
   width:100vw;height:100vh;
-  background-color:#b8934a;
-  background-image:
-    radial-gradient(ellipse at 15% 20%,rgba(190,148,70,.55) 0%,transparent 55%),
-    radial-gradient(ellipse at 85% 80%,rgba(130,84,24,.5) 0%,transparent 55%),
-    repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px),
-    repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.02) 3px,rgba(0,0,0,.02) 4px);
+  background:
+    radial-gradient(ellipse at 25% 75%, rgba(30,55,90,.9) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(40,80,60,.6) 0%, transparent 50%),
+    #0d1321;
   display:flex;flex-direction:column;
-  padding:10px 14px 10px;
-  border:14px solid #4a2c0e;
-  outline:3px solid #6b3c14;
-  box-shadow:inset 0 0 40px rgba(0,0,0,.35),0 0 0 2px #3a1e06;
+  padding:12px 16px 12px;
+  position:relative;overflow:hidden;
 }
  
-/* HEADER */
-.header{text-align:center;margin-bottom:8px;flex-shrink:0}
-.tape{
-  display:inline-block;background:rgba(255,248,180,.85);
-  padding:2px 44px 4px;transform:rotate(-.5deg);
-  box-shadow:2px 3px 8px rgba(0,0,0,.28);position:relative;
+/* dot grid */
+#board::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:26px 26px;
 }
-.tape::before,.tape::after{content:'';position:absolute;top:0;width:24px;height:100%;background:rgba(210,225,255,.45)}
-.tape::before{left:-12px;transform:rotate(-1deg)}
-.tape::after{right:-12px;transform:rotate(1deg)}
-.title{font-family:'Caveat',cursive;font-size:36px;font-weight:700;color:#2c1810;letter-spacing:6px;line-height:1}
-.subtitle{font-size:10px;color:#7a4a1a;letter-spacing:2px;margin-top:0px}
  
-/* GRID — 6×4, fills remaining height */
+/* ─── HEADER ─── */
+.header{
+  text-align:center;margin-bottom:10px;flex-shrink:0;position:relative;z-index:1;
+}
+.title-badge{
+  display:inline-flex;flex-direction:column;align-items:center;
+  position:relative;padding:4px 60px 6px;
+}
+/* tape left/right */
+.title-badge::before,.title-badge::after{
+  content:'';position:absolute;top:50%;width:44px;height:22px;
+  background:rgba(255,240,120,.28);border-radius:2px;
+}
+.title-badge::before{left:-20px;transform:translateY(-50%) rotate(-2.5deg)}
+.title-badge::after{right:-20px;transform:translateY(-50%) rotate(2deg)}
+ 
+.title{
+  font-family:'Caveat',cursive;font-size:46px;font-weight:700;
+  color:#fff;letter-spacing:10px;line-height:1;
+  text-shadow:0 0 50px rgba(255,200,80,.35), 0 2px 12px rgba(0,0,0,.9);
+}
+.subtitle{
+  font-size:10px;color:rgba(255,255,255,.35);
+  letter-spacing:2.5px;margin-top:1px;
+}
+ 
+/* ─── GRID ─── */
 .grid{
   flex:1;min-height:0;
   display:grid;
   grid-template-columns:repeat(6,1fr);
   grid-template-rows:repeat(4,1fr);
-  gap:8px;
+  gap:9px;
+  position:relative;z-index:1;
 }
  
-/* NOTE */
+/* ─── NOTE ─── */
 .note{
   position:relative;cursor:pointer;
   transform:rotate(var(--rot));
-  transition:transform .18s ease;
-  animation:pop .38s ease both;
+  transition:transform .22s cubic-bezier(.34,1.4,.64,1), filter .22s;
+  animation:pop .48s cubic-bezier(.34,1.4,.64,1) both;
   z-index:1;
+  filter:drop-shadow(3px 6px 10px rgba(0,0,0,.65));
 }
 @keyframes pop{
-  from{opacity:0;transform:scale(.75) rotate(var(--rot))}
-  to{opacity:1;transform:scale(1) rotate(var(--rot))}
+  from{opacity:0;transform:scale(.6) rotate(var(--rot))}
+  to  {opacity:1;transform:scale(1) rotate(var(--rot))}
 }
-.note:hover{transform:scale(1.12) rotate(0deg)!important;z-index:20}
+.note:hover{
+  transform:scale(1.13) rotate(0deg) translateY(-5px)!important;
+  z-index:20;
+  filter:drop-shadow(6px 12px 22px rgba(0,0,0,.85)) brightness(1.07);
+}
  
 .note-inner{
   width:100%;height:100%;
   background:var(--bg);
-  padding:7px 8px 10px;
+  padding:8px 9px 11px;
   display:flex;flex-direction:column;justify-content:space-between;
-  box-shadow:3px 5px 12px rgba(0,0,0,.32),inset 0 -2px 4px rgba(0,0,0,.07);
   position:relative;overflow:hidden;
 }
+/* fold corner */
 .note-inner::after{
   content:'';position:absolute;bottom:0;right:0;
-  border-style:solid;border-width:0 0 11px 11px;
-  border-color:transparent transparent rgba(0,0,0,.13) transparent;
+  border-style:solid;border-width:0 0 13px 13px;
+  border-color:transparent transparent rgba(0,0,0,.15) transparent;
 }
  
 /* tack */
 .tack{
-  position:absolute;top:-7px;left:50%;transform:translateX(-50%);
-  width:12px;height:12px;border-radius:50%;
-  background:radial-gradient(circle at 35% 35%,#e8e8e8,#777);
-  box-shadow:0 2px 4px rgba(0,0,0,.55);z-index:2;
+  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  width:13px;height:13px;border-radius:50%;
+  background:conic-gradient(from 30deg,#f5f5f5 0deg,#bbb 130deg,#eee 250deg,#f5f5f5 360deg);
+  box-shadow:0 2px 7px rgba(0,0,0,.75),inset 0 1px 2px rgba(255,255,255,.5);
+  z-index:2;
 }
 .tack::after{
-  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
-  width:2px;height:6px;background:linear-gradient(to bottom,#888,#444);
+  content:'';position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);
+  width:2.5px;height:7px;
+  background:linear-gradient(to bottom,#aaa,#555);
+  border-radius:0 0 1px 1px;
 }
  
 .note-num{
   font-family:'Caveat',cursive;font-size:10px;font-weight:700;
   color:var(--ac);opacity:.6;letter-spacing:.5px;
 }
-/* 키워드: 짧고 굵게 */
 .note-kw{
   font-family:'Caveat',cursive;
-  font-size:clamp(13px,1.3vw,17px);
-  font-weight:700;color:#1e0f05;
-  line-height:1.25;
-  word-break:keep-all;
+  font-size:clamp(12px,1.2vw,15px);
+  font-weight:700;color:#160a00;
+  line-height:1.2;word-break:keep-all;
 }
  
-/* answered */
-.note.answered .note-inner::before{
-  content:'✓';position:absolute;top:4px;right:6px;
-  font-size:13px;font-weight:700;color:var(--ac);opacity:.4;
+/* answered overlay */
+.note.answered .note-inner{opacity:.6}
+.note.answered .check-stamp{
+  display:flex;
+}
+.check-stamp{
+  display:none;
+  position:absolute;inset:0;
+  align-items:center;justify-content:center;
+  font-size:38px;font-weight:900;
+  color:var(--ac);opacity:.22;
+  pointer-events:none;z-index:3;
 }
  
-/* MODAL */
+/* ─── MODAL ─── */
 #modal{
   display:none;position:fixed;inset:0;
-  background:rgba(20,10,4,.8);
-  backdrop-filter:blur(5px);
+  background:rgba(5,8,18,.88);
+  backdrop-filter:blur(10px);
   z-index:500;align-items:center;justify-content:center;
 }
 #modal.open{display:flex}
  
 .modal-card{
-  background:var(--m-bg,#fef9c3);
-  max-width:640px;width:90%;
-  padding:44px 50px 50px;
+  background:var(--m-bg,#FFEE32);
+  max-width:660px;width:90%;
+  padding:48px 52px 52px;
   position:relative;
-  box-shadow:10px 16px 60px rgba(0,0,0,.7),inset 0 -4px 12px rgba(0,0,0,.08);
-  animation:cardIn .35s cubic-bezier(.22,1,.36,1) both;
+  transform:rotate(-.4deg);
+  box-shadow:14px 22px 90px rgba(0,0,0,.8),inset 0 -3px 8px rgba(0,0,0,.06);
+  animation:cardIn .42s cubic-bezier(.22,1,.36,1) both;
 }
 @keyframes cardIn{
-  from{opacity:0;transform:scale(.84) translateY(28px)}
-  to{opacity:1;transform:scale(1) translateY(0)}
+  from{opacity:0;transform:scale(.78) rotate(-2deg) translateY(44px)}
+  to  {opacity:1;transform:scale(1)   rotate(-.4deg) translateY(0)}
 }
 .modal-card::after{
   content:'';position:absolute;bottom:0;right:0;
-  border-style:solid;border-width:0 0 40px 40px;
+  border-style:solid;border-width:0 0 50px 50px;
   border-color:transparent transparent rgba(0,0,0,.1) transparent;
 }
+ 
 .m-tack{
-  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:24px;height:24px;border-radius:50%;
-  background:radial-gradient(circle at 35% 35%,#f0f0f0,#888);
-  box-shadow:0 3px 10px rgba(0,0,0,.65);
+  position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  width:28px;height:28px;border-radius:50%;
+  background:conic-gradient(from 30deg,#f8f8f8 0deg,#aaa 130deg,#efefef 250deg,#f8f8f8 360deg);
+  box-shadow:0 4px 14px rgba(0,0,0,.75),inset 0 1px 3px rgba(255,255,255,.6);
 }
 .m-tack::after{
-  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
-  width:3.5px;height:12px;background:linear-gradient(to bottom,#888,#444);
+  content:'';position:absolute;top:calc(100% - 2px);left:50%;transform:translateX(-50%);
+  width:4px;height:16px;
+  background:linear-gradient(to bottom,#aaa,#444);
+  border-radius:0 0 2px 2px;
 }
  
 .m-num{
   font-family:'Caveat',cursive;font-size:14px;font-weight:700;
-  color:var(--m-ac);opacity:.65;letter-spacing:2px;margin-bottom:14px;
+  color:var(--m-ac);opacity:.6;letter-spacing:2px;margin-bottom:16px;
 }
+ 
 .m-info{
-  display:flex;align-items:baseline;gap:16px;
-  margin-bottom:18px;padding-bottom:16px;
-  border-bottom:1.5px dashed rgba(0,0,0,.15);
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;padding-bottom:18px;
+  border-bottom:2px dashed rgba(0,0,0,.18);
 }
-.m-id{font-family:'Noto Sans KR',sans-serif;font-size:17px;font-weight:500}
-.m-name{font-family:'Caveat',cursive;font-size:34px;font-weight:700;color:#1a0a02}
-.m-q-label{font-family:'Caveat',cursive;font-size:12px;color:var(--m-ac);letter-spacing:1px;opacity:.6;margin-bottom:8px}
+.m-id{
+  font-size:14px;font-weight:500;color:var(--m-ac);
+  background:rgba(0,0,0,.08);padding:3px 12px;border-radius:30px;
+  letter-spacing:.5px;
+}
+.m-name{
+  font-family:'Caveat',cursive;font-size:38px;font-weight:700;color:#180c00;
+}
+ 
+.m-lang-tag{
+  font-size:10px;font-weight:500;color:var(--m-ac);
+  background:rgba(0,0,0,.08);padding:2px 10px;border-radius:20px;
+  letter-spacing:1px;margin-bottom:10px;display:inline-block;
+}
 .m-question{
-  font-family:'Caveat',cursive;
-  font-size:clamp(26px,3.8vw,36px);
-  font-weight:600;color:#1a0a02;line-height:1.55;
+  font-family:'Noto Sans KR','Noto Sans JP',sans-serif;
+  font-size:clamp(18px,2.6vw,26px);
+  font-weight:500;color:#180c00;
+  line-height:1.7;
 }
-.m-footer{display:flex;justify-content:space-between;align-items:center;margin-top:26px}
+ 
+.m-footer{
+  display:flex;justify-content:space-between;align-items:center;margin-top:28px;
+}
 .m-close{
-  font-family:'Caveat',cursive;font-size:17px;
-  background:rgba(0,0,0,.08);border:1.5px solid rgba(0,0,0,.15);
-  color:#3a2008;padding:7px 22px;border-radius:4px;cursor:pointer;transition:background .15s;
+  font-size:13px;font-weight:500;
+  background:rgba(0,0,0,.09);border:none;
+  color:rgba(0,0,0,.55);
+  padding:8px 24px;border-radius:40px;cursor:pointer;
+  transition:background .15s;letter-spacing:.5px;
 }
-.m-close:hover{background:rgba(0,0,0,.16)}
+.m-close:hover{background:rgba(0,0,0,.17)}
 .m-answered{
-  font-family:'Caveat',cursive;font-size:15px;
+  font-size:13px;font-weight:500;
   background:none;border:1.5px solid var(--m-ac);
-  color:var(--m-ac);padding:7px 16px;border-radius:4px;cursor:pointer;transition:all .15s;
+  color:var(--m-ac);
+  padding:8px 18px;border-radius:40px;cursor:pointer;
+  transition:all .18s;letter-spacing:.5px;
 }
 .m-answered.on{background:var(--m-ac);color:#fff}
  
-/* FAB + EDIT */
+/* ─── FAB ─── */
 .fab{
-  position:fixed;bottom:20px;right:20px;
+  position:fixed;bottom:22px;right:22px;
   width:42px;height:42px;border-radius:50%;
-  background:#4a2c0e;border:2px solid #c8a96e;
-  color:#e8c97a;font-size:18px;cursor:pointer;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.7);font-size:17px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.5);transition:transform .2s;z-index:400;
+  backdrop-filter:blur(8px);
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+  transition:all .2s;z-index:400;
 }
-.fab:hover{transform:scale(1.1) rotate(12deg)}
-.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:600;align-items:center;justify-content:center}
+.fab:hover{background:rgba(255,255,255,.18);transform:scale(1.1)}
+ 
+/* ─── EDIT ─── */
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
 .edit-overlay.open{display:flex}
-.edit-box{background:#2c1810;border:2px solid #c8a96e;padding:26px;max-width:780px;width:96%;max-height:88vh;overflow-y:auto;border-radius:4px}
-.edit-box h2{font-family:'Caveat',cursive;font-size:24px;color:#e8c97a;margin-bottom:14px}
+.edit-box{background:#141c2e;border:1px solid rgba(255,255,255,.1);padding:26px;max-width:840px;width:96%;max-height:88vh;overflow-y:auto;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.9)}
+.edit-box h2{font-family:'Caveat',cursive;font-size:24px;color:#e8d87a;margin-bottom:14px}
 .edit-table{width:100%;border-collapse:collapse;margin-bottom:14px}
-.edit-table th{font-size:11px;color:#c8a96e;letter-spacing:1px;padding:0 5px 7px;text-align:left;border-bottom:1px solid rgba(200,169,110,.3)}
+.edit-table th{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;padding:0 5px 7px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
 .edit-table td{padding:4px 3px}
-.edit-table input{width:100%;font-family:'Noto Sans KR',sans-serif;font-size:12px;background:rgba(255,255,255,.07);border:1px solid rgba(200,169,110,.35);color:#f0e0b0;padding:5px 7px;border-radius:3px;outline:none}
-.edit-table input:focus{border-color:#c8a96e}
-.del-btn{background:none;border:1px solid rgba(255,100,100,.35);color:#ff8888;width:24px;height:24px;border-radius:3px;cursor:pointer;font-size:12px}
-.e-add{font-family:'Caveat',cursive;font-size:15px;background:rgba(200,169,110,.2);border:1px solid #c8a96e;color:#e8c97a;padding:5px 16px;border-radius:3px;cursor:pointer;margin-right:7px}
-.e-save{font-family:'Caveat',cursive;font-size:15px;background:#c8a96e;border:none;color:#2c1810;font-weight:700;padding:5px 20px;border-radius:3px;cursor:pointer;margin-right:7px}
-.e-cancel{font-family:'Caveat',cursive;font-size:15px;background:none;border:1px solid rgba(255,255,255,.2);color:#aaa;padding:5px 14px;border-radius:3px;cursor:pointer}
+.edit-table input{width:100%;font-family:'Noto Sans KR','Noto Sans JP',sans-serif;font-size:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#f0ecd0;padding:5px 8px;border-radius:6px;outline:none}
+.edit-table input:focus{border-color:rgba(255,220,80,.55)}
+.del-btn{background:none;border:1px solid rgba(255,100,100,.3);color:#ff9090;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:12px}
+.e-add{font-size:12px;background:rgba(255,220,80,.12);border:1px solid rgba(255,220,80,.35);color:#e8d87a;padding:6px 16px;border-radius:6px;cursor:pointer;margin-right:8px}
+.e-save{font-size:12px;background:#e8d87a;border:none;color:#1a1500;font-weight:700;padding:6px 20px;border-radius:6px;cursor:pointer;margin-right:8px}
+.e-cancel{font-size:12px;background:none;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);padding:6px 14px;border-radius:6px;cursor:pointer}
 </style>
 </head>
 <body>
  
 <div id="board">
   <div class="header">
-    <div class="tape">
+    <div class="title-badge">
       <div class="title">Q &amp; A</div>
       <div class="subtitle">포스트잇을 클릭하면 질문이 펼쳐집니다</div>
     </div>
@@ -219,7 +280,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:#4a2c0e}
       <span class="m-id" id="mId"></span>
       <span class="m-name" id="mName"></span>
     </div>
-    <div class="m-q-label">질문</div>
+    <div class="m-lang-tag" id="mLang"></div>
     <div class="m-question" id="mQ"></div>
     <div class="m-footer">
       <button class="m-close" onclick="closeModal()">← 닫기</button>
@@ -235,10 +296,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:#4a2c0e}
     <h2>📌 질문 목록 편집</h2>
     <table class="edit-table">
       <thead><tr>
-        <th style="width:100px">학번</th>
-        <th style="width:75px">이름</th>
-        <th style="width:120px">키워드 (포스트잇)</th>
-        <th>질문 전체</th>
+        <th style="width:80px">학번</th>
+        <th style="width:72px">이름</th>
+        <th style="width:95px">키워드</th>
+        <th>질문</th>
         <th style="width:28px"></th>
       </tr></thead>
       <tbody id="editBody"></tbody>
@@ -251,46 +312,53 @@ body{font-family:'Noto Sans KR',sans-serif;background:#4a2c0e}
  
 <script>
 const COLORS=[
-  {bg:'#fef9c3',ac:'#a16207'},
-  {bg:'#bbf7d0',ac:'#15803d'},
-  {bg:'#fecaca',ac:'#b91c1c'},
-  {bg:'#bfdbfe',ac:'#1d4ed8'},
-  {bg:'#e9d5ff',ac:'#7c3aed'},
-  {bg:'#fed7aa',ac:'#c2410c'},
-  {bg:'#99f6e4',ac:'#0f766e'},
-  {bg:'#fce7f3',ac:'#be185d'},
-  {bg:'#d9f99d',ac:'#3f6212'},
-  {bg:'#fde68a',ac:'#92400e'},
-  {bg:'#c7d2fe',ac:'#3730a3'},
-  {bg:'#fbcfe8',ac:'#9d174d'},
+  {bg:'#FFEE32',ac:'#9a6c00'},
+  {bg:'#FF7F7F',ac:'#7a0000'},
+  {bg:'#50E3C2',ac:'#005c50'},
+  {bg:'#B5F0A0',ac:'#286018'},
+  {bg:'#FFB347',ac:'#7a3c00'},
+  {bg:'#D4A0FF',ac:'#460080'},
+  {bg:'#7DD5F8',ac:'#003c6e'},
+  {bg:'#FFB3CC',ac:'#7a0028'},
+  {bg:'#ACFFB8',ac:'#185522'},
+  {bg:'#FFE09A',ac:'#6b3e00'},
+  {bg:'#C0BFFF',ac:'#28289a'},
+  {bg:'#FFF8A0',ac:'#6a5800'},
 ];
+ 
 const ROTS=[-3,1.5,-1.5,2.5,-2,3,-1,2,-2.5,1.5,-3,2,-1,3,-2,1,-3.5,2.5,-1,3,-2.5,1.5,-1.5,2];
  
+function detectLang(q){
+  if(/[\u3040-\u30ff\u4e00-\u9faf]/.test(q)) return '日本語';
+  if(/[가-힣]/.test(q)) return '한국어';
+  return 'English';
+}
+ 
 let data=[
-  {id:'20210001',name:'김민준',kw:'업무 환경',q:'업무 환경에서 가장 개선이 필요한 부분은 무엇인가요?'},
-  {id:'20210002',name:'이서연',kw:'팀 소통',q:'팀 내 소통에서 어려움을 느끼는 상황이 있나요?'},
-  {id:'20210003',name:'박도윤',kw:'보람',q:'올해 가장 보람 있었던 순간은 언제였나요?'},
-  {id:'20210004',name:'최지아',kw:'회사 방향',q:'회사가 앞으로 집중해야 할 방향이 있다면?'},
-  {id:'20210005',name:'정시우',kw:'어려움',q:'업무 중 가장 어려웠던 점은 무엇인가요?'},
-  {id:'20210006',name:'강하은',kw:'조직 문화',q:'조직 문화에서 꼭 지켜야 할 것이 있다면?'},
-  {id:'20210007',name:'윤준서',kw:'성장 지원',q:'개인 성장을 위해 회사에 바라는 지원이 있다면?'},
-  {id:'20210008',name:'임나은',kw:'협업',q:'동료와의 협업에서 개선하고 싶은 점이 있나요?'},
-  {id:'20210009',name:'한지호',kw:'워라밸',q:'업무와 일상의 균형을 유지하는 본인만의 방법이 있나요?'},
-  {id:'20210010',name:'오서진',kw:'성장 분야',q:'입사 이후 가장 많이 성장한 분야는 무엇이라 생각하나요?'},
-  {id:'20210011',name:'서예준',kw:'업무 목표',q:'현재 가장 집중하고 있는 업무 목표는 무엇인가요?'},
-  {id:'20210012',name:'전수아',kw:'리더십',q:'팀장이나 리더에게 바라는 점이 있다면?'},
-  {id:'20210013',name:'황이준',kw:'복지',q:'회사의 복지 중 가장 만족스러운 것은 무엇인가요?'},
-  {id:'20210014',name:'신지유',kw:'동료 도움',q:'동료에게 받은 도움 중 가장 기억에 남는 것은?'},
-  {id:'20210015',name:'류준혁',kw:'도전',q:'앞으로 도전해 보고 싶은 프로젝트나 역할이 있나요?'},
-  {id:'20210016',name:'배채원',kw:'회의 문화',q:'회의 문화에서 개선됐으면 하는 점이 있나요?'},
-  {id:'20210017',name:'조민서',kw:'충전 방법',q:'업무 외 시간에 주로 어떤 활동으로 충전하시나요?'},
-  {id:'20210018',name:'권도현',kw:'의미 있는 일',q:'지금까지 맡은 업무 중 가장 의미 있었던 것은?'},
-  {id:'20210019',name:'문지원',kw:'온보딩',q:'신입이 적응하기 좋은 환경을 만들려면 무엇이 필요할까요?'},
-  {id:'20210020',name:'남현우',kw:'팀 성과',q:'팀 성과를 높이기 위한 본인의 아이디어가 있다면?'},
-  {id:'20210021',name:'송아린',kw:'자랑스러움',q:'현재 조직에서 가장 자랑스러운 점은 무엇인가요?'},
-  {id:'20210022',name:'변태양',kw:'업무 효율',q:'업무 효율을 높이기 위해 도입했으면 하는 도구나 방식은?'},
-  {id:'20210023',name:'구세은',kw:'자유 발언',q:'자유롭게 하고 싶은 이야기를 들려주세요.'},
-  {id:'20210024',name:'홍예린',kw:'오늘의 주제',q:'오늘 간담회에서 꼭 나눠보고 싶은 주제가 있다면?'},
+  {id:'10124',name:'홍승표',kw:'장래 희망',   q:'将来、やってみたい仕事や興味のある分野はありますか？'},
+  {id:'10310',name:'서성원',kw:'일본 명소',   q:'What do you think the most famous landmark is in Japan?'},
+  {id:'10322',name:'이현오',kw:'한국 체험',   q:'What kind of activities do you want to do in Korea?'},
+  {id:'10415',name:'이선우',kw:'방과후 장소',  q:'放課後は、いつもどこで遊ぶことが多いですか？'},
+  {id:'10514',name:'성지민',kw:'일본 추천',   q:'If I visit Japan, what is one experience or culture I should try?'},
+  {id:'10517',name:'엄지원',kw:'한국생 이미지', q:'What kind of image comes to mind when you think of Korean students?'},
+  {id:'10620',name:'임지민',kw:'한국 음식',   q:'韓国の料理で何が好きですか？'},
+  {id:'10709',name:'김윤성',kw:'음악 취향',   q:'What kind of music do Japanese high school students usually listen to these days?'},
+  {id:'10728',name:'홍주희',kw:'학교생활 비교', q:'How is school life in Japan different from school life in Korea?'},
+  {id:'10901',name:'강민채',kw:'추천 도시',   q:'If a Korean friend visits Japan, which place or city would you recommend the most?'},
+  {id:'10916',name:'박해랑',kw:'학교 매점',   q:'日本の高校にも売店はありますか？あれば、おすすめメニューを教えてください！'},
+  {id:'10918',name:'심예원',kw:'학교 급식',   q:'What are school lunches like in Japan? Please share your favorite menu!'},
+  {id:'10923',name:'이태경',kw:'문화 충격',   q:'Have you ever felt a cultural difference when you came to Korea? If so, when did you feel it?'},
+  {id:'10927',name:'차설의',kw:'체육 대회',   q:'In South Korea, students order matching T-shirts for sports festivals. Does Japan have a similar culture?'},
+  {id:'20106',name:'김언수',kw:'애니·만화',   q:'好きなアニメや漫画は何？'},
+  {id:'20121',name:'허준태',kw:'생일 축하',   q:'日本の高校生は、友達の誕生日をどのようにお祝いすることが多いですか？'},
+  {id:'20213',name:'신지원',kw:'꿈',          q:'あなたの夢は何ですか？'},
+  {id:'20310',name:'박민욱',kw:'취미',        q:'What is your hobby?'},
+  {id:'20314',name:'이상원',kw:'일본 학교 자랑', q:'韓国の学生にも体験してほしい、日本独自の学校文化はありますか？'},
+  {id:'20407',name:'문예성',kw:'한국 첫인상',  q:'日本から韓国に初めて来たとき、日本と一番違うと感じたことは何でしたか？'},
+  {id:'20418',name:'정경훈',kw:'K-POP 관심',  q:'韓国のアイドルやアニメは好きですか？'},
+  {id:'20724',name:'최예승',kw:'학교 행사',   q:'What is your favorite school event?'},
+  {id:'20806',name:'김수현',kw:'학교 교칙',   q:'Are there any unique school rules, or rules that are different from those in Korea?'},
+  {id:'20825',name:'한설아',kw:'SNS 유행',    q:'最近、日本の高校生の間でTikTokで話題のチャレンジや流行している音楽は何ですか？'},
 ];
  
 let answered=new Array(data.length).fill(false);
@@ -304,13 +372,14 @@ function render(){
     const rot=ROTS[i%ROTS.length];
     const div=document.createElement('div');
     div.className='note'+(answered[i]?' answered':'');
-    div.style.cssText=`--rot:${rot}deg;--bg:${c.bg};--ac:${c.ac};animation-delay:${(i*.025).toFixed(2)}s`;
+    div.style.cssText=`--rot:${rot}deg;--bg:${c.bg};--ac:${c.ac};animation-delay:${(i*.028).toFixed(2)}s`;
     div.innerHTML=`
       <div class="tack"></div>
       <div class="note-inner">
-        <div class="note-num">Q ${String(i+1).padStart(2,'0')}</div>
+        <div class="note-num">Q${String(i+1).padStart(2,'0')}</div>
         <div class="note-kw">${d.kw}</div>
-      </div>`;
+      </div>
+      <div class="check-stamp">✓</div>`;
     div.onclick=()=>openModal(i);
     grid.appendChild(div);
   });
@@ -324,13 +393,15 @@ function openModal(idx){
   card.style.setProperty('--m-bg',c.bg);
   card.style.setProperty('--m-ac',c.ac);
   card.style.animation='none';card.offsetHeight;
-  card.style.animation='cardIn .35s cubic-bezier(.22,1,.36,1) both';
+  card.style.animation='cardIn .42s cubic-bezier(.22,1,.36,1) both';
  
   document.getElementById('mNum').textContent=`Q ${String(idx+1).padStart(2,'0')}`;
   document.getElementById('mNum').style.color=c.ac;
   document.getElementById('mId').textContent=d.id;
   document.getElementById('mId').style.color=c.ac;
   document.getElementById('mName').textContent=d.name;
+  document.getElementById('mLang').textContent=detectLang(d.q);
+  document.getElementById('mLang').style.color=c.ac;
   document.getElementById('mQ').textContent=d.q;
  
   const ab=document.getElementById('answeredBtn');
@@ -340,10 +411,12 @@ function openModal(idx){
 }
  
 function closeModal(){document.getElementById('modal').classList.remove('open')}
+ 
 function toggleAnswered(){
   answered[currentIdx]=!answered[currentIdx];
   document.getElementById('answeredBtn').classList.toggle('on',answered[currentIdx]);
-  document.querySelectorAll('.note')[currentIdx].classList.toggle('answered',answered[currentIdx]);
+  const notes=document.querySelectorAll('.note');
+  notes[currentIdx].classList.toggle('answered',answered[currentIdx]);
 }
  
 document.getElementById('modal').addEventListener('click',e=>{
@@ -351,7 +424,6 @@ document.getElementById('modal').addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
  
-// EDIT
 function openEdit(){
   const tbody=document.getElementById('editBody');
   tbody.innerHTML='';
@@ -363,8 +435,8 @@ function addEditRow(tbody,id='',name='',kw='',q=''){
   tr.innerHTML=`
     <td><input class="e-id" value="${id}" placeholder="학번"></td>
     <td><input class="e-name" value="${name}" placeholder="이름"></td>
-    <td><input class="e-kw" value="${kw}" placeholder="키워드 (짧게)"></td>
-    <td><input class="e-q" value="${q.replace(/"/g,'&quot;')}" placeholder="질문 전체 내용"></td>
+    <td><input class="e-kw" value="${kw.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" placeholder="키워드"></td>
+    <td><input class="e-q" value="${q.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" placeholder="질문"></td>
     <td><button class="del-btn" onclick="this.closest('tr').remove()">✕</button></td>`;
   tbody.appendChild(tr);
 }
@@ -389,3 +461,4 @@ render();
 </script>
 </body>
 </html>
+ 
