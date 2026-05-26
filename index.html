@@ -9,67 +9,38 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden}
 body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
- 
-/* ─── BOARD ─── */
+
 #board{
   width:100vw;height:100vh;
   background:
-    radial-gradient(ellipse at 25% 75%, rgba(30,55,90,.9) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 20%, rgba(40,80,60,.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 25% 75%,rgba(30,55,90,.9) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 20%,rgba(40,80,60,.6) 0%,transparent 50%),
     #0d1321;
   display:flex;flex-direction:column;
   padding:12px 16px 12px;
   position:relative;overflow:hidden;
 }
- 
-/* dot grid */
 #board::before{
   content:'';position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px);
   background-size:26px 26px;
 }
- 
-/* ─── HEADER ─── */
-.header{
-  text-align:center;margin-bottom:10px;flex-shrink:0;position:relative;z-index:1;
-}
-.title-badge{
-  display:inline-flex;flex-direction:column;align-items:center;
-  position:relative;padding:4px 60px 6px;
-}
-/* tape left/right */
-.title-badge::before,.title-badge::after{
-  content:'';position:absolute;top:50%;width:44px;height:22px;
-  background:rgba(255,240,120,.28);border-radius:2px;
-}
+
+.header{text-align:center;margin-bottom:10px;flex-shrink:0;position:relative;z-index:1}
+.title-badge{display:inline-flex;flex-direction:column;align-items:center;position:relative;padding:4px 60px 6px}
+.title-badge::before,.title-badge::after{content:'';position:absolute;top:50%;width:44px;height:22px;background:rgba(255,240,120,.28);border-radius:2px}
 .title-badge::before{left:-20px;transform:translateY(-50%) rotate(-2.5deg)}
 .title-badge::after{right:-20px;transform:translateY(-50%) rotate(2deg)}
- 
-.title{
-  font-family:'Caveat',cursive;font-size:46px;font-weight:700;
-  color:#fff;letter-spacing:10px;line-height:1;
-  text-shadow:0 0 50px rgba(255,200,80,.35), 0 2px 12px rgba(0,0,0,.9);
-}
-.subtitle{
-  font-size:10px;color:rgba(255,255,255,.35);
-  letter-spacing:2.5px;margin-top:1px;
-}
- 
-/* ─── GRID ─── */
-.grid{
-  flex:1;min-height:0;
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  grid-template-rows:repeat(4,1fr);
-  gap:9px;
-  position:relative;z-index:1;
-}
- 
-/* ─── NOTE ─── */
+.title{font-family:'Caveat',cursive;font-size:46px;font-weight:700;color:#fff;letter-spacing:10px;line-height:1;text-shadow:0 0 50px rgba(255,200,80,.35),0 2px 12px rgba(0,0,0,.9)}
+.subtitle{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:2.5px;margin-top:1px}
+
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,1fr);gap:9px;position:relative;z-index:1}
+
+/* ── NOTE ── */
 .note{
   position:relative;cursor:pointer;
   transform:rotate(var(--rot));
-  transition:transform .22s cubic-bezier(.34,1.4,.64,1), filter .22s;
+  transition:transform .22s cubic-bezier(.34,1.4,.64,1),filter .22s;
   animation:pop .48s cubic-bezier(.34,1.4,.64,1) both;
   z-index:1;
   filter:drop-shadow(3px 6px 10px rgba(0,0,0,.65));
@@ -78,81 +49,51 @@ body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
   from{opacity:0;transform:scale(.6) rotate(var(--rot))}
   to  {opacity:1;transform:scale(1) rotate(var(--rot))}
 }
-.note:hover{
-  transform:scale(1.13) rotate(0deg) translateY(-5px)!important;
-  z-index:20;
-  filter:drop-shadow(6px 12px 22px rgba(0,0,0,.85)) brightness(1.07);
-}
- 
+.note:hover{transform:scale(1.13) rotate(0deg) translateY(-5px)!important;z-index:20;filter:drop-shadow(6px 12px 22px rgba(0,0,0,.85)) brightness(1.07)}
+
 .note-inner{
-  width:100%;height:100%;
-  background:var(--bg);
-  padding:8px 9px 11px;
+  width:100%;height:100%;background:var(--bg);
+  padding:7px 8px 10px;
   display:flex;flex-direction:column;justify-content:space-between;
   position:relative;overflow:hidden;
 }
-/* fold corner */
-.note-inner::after{
-  content:'';position:absolute;bottom:0;right:0;
-  border-style:solid;border-width:0 0 13px 13px;
-  border-color:transparent transparent rgba(0,0,0,.15) transparent;
-}
- 
-/* tack */
-.tack{
-  position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-  width:13px;height:13px;border-radius:50%;
-  background:conic-gradient(from 30deg,#f5f5f5 0deg,#bbb 130deg,#eee 250deg,#f5f5f5 360deg);
-  box-shadow:0 2px 7px rgba(0,0,0,.75),inset 0 1px 2px rgba(255,255,255,.5);
-  z-index:2;
-}
-.tack::after{
-  content:'';position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);
-  width:2.5px;height:7px;
-  background:linear-gradient(to bottom,#aaa,#555);
-  border-radius:0 0 1px 1px;
-}
- 
-.note-num{
-  font-family:'Caveat',cursive;font-size:10px;font-weight:700;
-  color:var(--ac);opacity:.6;letter-spacing:.5px;
-}
+.note-inner::after{content:'';position:absolute;bottom:0;right:0;border-style:solid;border-width:0 0 13px 13px;border-color:transparent transparent rgba(0,0,0,.15) transparent}
+
+.tack{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:conic-gradient(from 30deg,#f5f5f5 0deg,#bbb 130deg,#eee 250deg,#f5f5f5 360deg);box-shadow:0 2px 7px rgba(0,0,0,.75),inset 0 1px 2px rgba(255,255,255,.5);z-index:2}
+.tack::after{content:'';position:absolute;top:calc(100% - 1px);left:50%;transform:translateX(-50%);width:2.5px;height:7px;background:linear-gradient(to bottom,#aaa,#555);border-radius:0 0 1px 1px}
+
+.note-num{font-family:'Caveat',cursive;font-size:10px;font-weight:700;color:var(--ac);opacity:.6;letter-spacing:.5px}
+
+.note-kw-wrap{display:flex;flex-direction:column;gap:2px}
+
 .note-kw{
   font-family:'Caveat',cursive;
-  font-size:clamp(12px,1.2vw,15px);
+  font-size:clamp(11px,1.1vw,14px);
   font-weight:700;color:#160a00;
   line-height:1.2;word-break:keep-all;
 }
- 
-/* answered overlay */
+/* 한국어 번역 키워드 */
+.note-kw-ko{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:clamp(8px,0.65vw,10px);
+  font-weight:400;color:#160a00;
+  opacity:.5;line-height:1.2;
+  word-break:keep-all;
+}
+
 .note.answered .note-inner{opacity:.6}
-.note.answered .check-stamp{
-  display:flex;
-}
-.check-stamp{
-  display:none;
-  position:absolute;inset:0;
-  align-items:center;justify-content:center;
-  font-size:38px;font-weight:900;
-  color:var(--ac);opacity:.22;
-  pointer-events:none;z-index:3;
-}
- 
-/* ─── MODAL ─── */
-#modal{
-  display:none;position:fixed;inset:0;
-  background:rgba(5,8,18,.88);
-  backdrop-filter:blur(10px);
-  z-index:500;align-items:center;justify-content:center;
-}
+.check-stamp{display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:var(--ac);opacity:.22;pointer-events:none;z-index:3}
+.note.answered .check-stamp{display:flex}
+
+/* ── MODAL ── */
+#modal{display:none;position:fixed;inset:0;background:rgba(5,8,18,.88);backdrop-filter:blur(10px);z-index:500;align-items:center;justify-content:center}
 #modal.open{display:flex}
- 
+
 .modal-card{
   background:var(--m-bg,#FFEE32);
   max-width:660px;width:90%;
-  padding:48px 52px 52px;
-  position:relative;
-  transform:rotate(-.4deg);
+  padding:46px 50px 50px;
+  position:relative;transform:rotate(-.4deg);
   box-shadow:14px 22px 90px rgba(0,0,0,.8),inset 0 -3px 8px rgba(0,0,0,.06);
   animation:cardIn .42s cubic-bezier(.22,1,.36,1) both;
 }
@@ -160,108 +101,61 @@ body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
   from{opacity:0;transform:scale(.78) rotate(-2deg) translateY(44px)}
   to  {opacity:1;transform:scale(1)   rotate(-.4deg) translateY(0)}
 }
-.modal-card::after{
-  content:'';position:absolute;bottom:0;right:0;
-  border-style:solid;border-width:0 0 50px 50px;
-  border-color:transparent transparent rgba(0,0,0,.1) transparent;
-}
- 
-.m-tack{
-  position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-  width:28px;height:28px;border-radius:50%;
-  background:conic-gradient(from 30deg,#f8f8f8 0deg,#aaa 130deg,#efefef 250deg,#f8f8f8 360deg);
-  box-shadow:0 4px 14px rgba(0,0,0,.75),inset 0 1px 3px rgba(255,255,255,.6);
-}
-.m-tack::after{
-  content:'';position:absolute;top:calc(100% - 2px);left:50%;transform:translateX(-50%);
-  width:4px;height:16px;
-  background:linear-gradient(to bottom,#aaa,#444);
-  border-radius:0 0 2px 2px;
-}
- 
-.m-num{
-  font-family:'Caveat',cursive;font-size:14px;font-weight:700;
-  color:var(--m-ac);opacity:.6;letter-spacing:2px;margin-bottom:16px;
-}
- 
-.m-info{
-  display:flex;align-items:center;gap:14px;
-  margin-bottom:20px;padding-bottom:18px;
-  border-bottom:2px dashed rgba(0,0,0,.18);
-}
-.m-id{
-  font-size:14px;font-weight:500;color:var(--m-ac);
-  background:rgba(0,0,0,.08);padding:3px 12px;border-radius:30px;
-  letter-spacing:.5px;
-}
-.m-name{
-  font-family:'Caveat',cursive;font-size:38px;font-weight:700;color:#180c00;
-}
- 
-.m-lang-tag{
-  font-size:10px;font-weight:500;color:var(--m-ac);
-  background:rgba(0,0,0,.08);padding:2px 10px;border-radius:20px;
-  letter-spacing:1px;margin-bottom:10px;display:inline-block;
-}
+.modal-card::after{content:'';position:absolute;bottom:0;right:0;border-style:solid;border-width:0 0 50px 50px;border-color:transparent transparent rgba(0,0,0,.1) transparent}
+
+.m-tack{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:conic-gradient(from 30deg,#f8f8f8 0deg,#aaa 130deg,#efefef 250deg,#f8f8f8 360deg);box-shadow:0 4px 14px rgba(0,0,0,.75),inset 0 1px 3px rgba(255,255,255,.6)}
+.m-tack::after{content:'';position:absolute;top:calc(100% - 2px);left:50%;transform:translateX(-50%);width:4px;height:16px;background:linear-gradient(to bottom,#aaa,#444);border-radius:0 0 2px 2px}
+
+.m-num{font-family:'Caveat',cursive;font-size:14px;font-weight:700;color:var(--m-ac);opacity:.6;letter-spacing:2px;margin-bottom:14px}
+
+.m-info{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:2px dashed rgba(0,0,0,.18)}
+.m-id{font-size:14px;font-weight:500;color:var(--m-ac);background:rgba(0,0,0,.08);padding:3px 12px;border-radius:30px;letter-spacing:.5px}
+.m-name{font-family:'Caveat',cursive;font-size:36px;font-weight:700;color:#180c00}
+
+.m-lang-tag{font-size:10px;font-weight:500;color:var(--m-ac);background:rgba(0,0,0,.08);padding:2px 10px;border-radius:20px;letter-spacing:1px;margin-bottom:10px;display:inline-block}
+
+/* 원문 질문 */
 .m-question{
   font-family:'Noto Sans KR','Noto Sans JP',sans-serif;
-  font-size:clamp(18px,2.6vw,26px);
-  font-weight:500;color:#180c00;
-  line-height:1.7;
+  font-size:clamp(17px,2.3vw,23px);
+  font-weight:500;color:#180c00;line-height:1.7;
 }
- 
-.m-footer{
-  display:flex;justify-content:space-between;align-items:center;margin-top:28px;
+/* 한국어 번역 질문 */
+.m-question-ko{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:clamp(13px,1.7vw,17px);
+  font-weight:400;color:#180c00;
+  opacity:.55;line-height:1.6;
+  margin-top:10px;padding-top:10px;
+  border-top:1.5px dashed rgba(0,0,0,.12);
 }
-.m-close{
-  font-size:13px;font-weight:500;
-  background:rgba(0,0,0,.09);border:none;
-  color:rgba(0,0,0,.55);
-  padding:8px 24px;border-radius:40px;cursor:pointer;
-  transition:background .15s;letter-spacing:.5px;
-}
+
+.m-footer{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.m-close{font-size:13px;font-weight:500;background:rgba(0,0,0,.09);border:none;color:rgba(0,0,0,.55);padding:8px 24px;border-radius:40px;cursor:pointer;transition:background .15s;letter-spacing:.5px}
 .m-close:hover{background:rgba(0,0,0,.17)}
-.m-answered{
-  font-size:13px;font-weight:500;
-  background:none;border:1.5px solid var(--m-ac);
-  color:var(--m-ac);
-  padding:8px 18px;border-radius:40px;cursor:pointer;
-  transition:all .18s;letter-spacing:.5px;
-}
+.m-answered{font-size:13px;font-weight:500;background:none;border:1.5px solid var(--m-ac);color:var(--m-ac);padding:8px 18px;border-radius:40px;cursor:pointer;transition:all .18s;letter-spacing:.5px}
 .m-answered.on{background:var(--m-ac);color:#fff}
- 
-/* ─── FAB ─── */
-.fab{
-  position:fixed;bottom:22px;right:22px;
-  width:42px;height:42px;border-radius:50%;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  color:rgba(255,255,255,.7);font-size:17px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);
-  box-shadow:0 4px 16px rgba(0,0,0,.5);
-  transition:all .2s;z-index:400;
-}
+
+.fab{position:fixed;bottom:22px;right:22px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(0,0,0,.5);transition:all .2s;z-index:400}
 .fab:hover{background:rgba(255,255,255,.18);transform:scale(1.1)}
- 
-/* ─── EDIT ─── */
+
 .edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
 .edit-overlay.open{display:flex}
-.edit-box{background:#141c2e;border:1px solid rgba(255,255,255,.1);padding:26px;max-width:840px;width:96%;max-height:88vh;overflow-y:auto;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.9)}
+.edit-box{background:#141c2e;border:1px solid rgba(255,255,255,.1);padding:26px;max-width:900px;width:96%;max-height:88vh;overflow-y:auto;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.9)}
 .edit-box h2{font-family:'Caveat',cursive;font-size:24px;color:#e8d87a;margin-bottom:14px}
 .edit-table{width:100%;border-collapse:collapse;margin-bottom:14px}
-.edit-table th{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;padding:0 5px 7px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
+.edit-table th{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;padding:0 4px 7px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
 .edit-table td{padding:4px 3px}
-.edit-table input{width:100%;font-family:'Noto Sans KR','Noto Sans JP',sans-serif;font-size:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#f0ecd0;padding:5px 8px;border-radius:6px;outline:none}
+.edit-table input{width:100%;font-family:'Noto Sans KR','Noto Sans JP',sans-serif;font-size:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#f0ecd0;padding:4px 7px;border-radius:5px;outline:none}
 .edit-table input:focus{border-color:rgba(255,220,80,.55)}
-.del-btn{background:none;border:1px solid rgba(255,100,100,.3);color:#ff9090;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:12px}
+.del-btn{background:none;border:1px solid rgba(255,100,100,.3);color:#ff9090;width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:11px}
 .e-add{font-size:12px;background:rgba(255,220,80,.12);border:1px solid rgba(255,220,80,.35);color:#e8d87a;padding:6px 16px;border-radius:6px;cursor:pointer;margin-right:8px}
 .e-save{font-size:12px;background:#e8d87a;border:none;color:#1a1500;font-weight:700;padding:6px 20px;border-radius:6px;cursor:pointer;margin-right:8px}
 .e-cancel{font-size:12px;background:none;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);padding:6px 14px;border-radius:6px;cursor:pointer}
 </style>
 </head>
 <body>
- 
+
 <div id="board">
   <div class="header">
     <div class="title-badge">
@@ -271,7 +165,7 @@ body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
   </div>
   <div class="grid" id="grid"></div>
 </div>
- 
+
 <div id="modal">
   <div class="modal-card" id="modalCard">
     <div class="m-tack"></div>
@@ -282,25 +176,28 @@ body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
     </div>
     <div class="m-lang-tag" id="mLang"></div>
     <div class="m-question" id="mQ"></div>
+    <div class="m-question-ko" id="mQko"></div>
     <div class="m-footer">
       <button class="m-close" onclick="closeModal()">← 닫기</button>
       <button class="m-answered" id="answeredBtn" onclick="toggleAnswered()">✓ 답변 완료</button>
     </div>
   </div>
 </div>
- 
+
 <button class="fab" onclick="openEdit()" title="편집">✎</button>
- 
+
 <div class="edit-overlay" id="editOverlay">
   <div class="edit-box">
     <h2>📌 질문 목록 편집</h2>
     <table class="edit-table">
       <thead><tr>
-        <th style="width:80px">학번</th>
-        <th style="width:72px">이름</th>
-        <th style="width:95px">키워드</th>
-        <th>질문</th>
-        <th style="width:28px"></th>
+        <th style="width:72px">학번</th>
+        <th style="width:64px">이름</th>
+        <th style="width:90px">키워드</th>
+        <th style="width:90px">키워드(한국어)</th>
+        <th>질문 (원문)</th>
+        <th>질문 (한국어 번역)</th>
+        <th style="width:26px"></th>
       </tr></thead>
       <tbody id="editBody"></tbody>
     </table>
@@ -309,7 +206,7 @@ body{font-family:'Noto Sans KR','Noto Sans JP',sans-serif;background:#0d1321}
     <button class="e-cancel" onclick="closeEdit()">취소</button>
   </div>
 </div>
- 
+
 <script>
 const COLORS=[
   {bg:'#FFEE32',ac:'#9a6c00'},
@@ -325,45 +222,115 @@ const COLORS=[
   {bg:'#C0BFFF',ac:'#28289a'},
   {bg:'#FFF8A0',ac:'#6a5800'},
 ];
- 
 const ROTS=[-3,1.5,-1.5,2.5,-2,3,-1,2,-2.5,1.5,-3,2,-1,3,-2,1,-3.5,2.5,-1,3,-2.5,1.5,-1.5,2];
- 
+
 function detectLang(q){
   if(/[\u3040-\u30ff\u4e00-\u9faf]/.test(q)) return '日本語';
   if(/[가-힣]/.test(q)) return '한국어';
   return 'English';
 }
- 
+
 let data=[
-  {id:'10124',name:'홍승표',kw:'장래 희망',   q:'将来、やってみたい仕事や興味のある分野はありますか？'},
-  {id:'10310',name:'서성원',kw:'일본 명소',   q:'What do you think the most famous landmark is in Japan?'},
-  {id:'10322',name:'이현오',kw:'한국 체험',   q:'What kind of activities do you want to do in Korea?'},
-  {id:'10415',name:'이선우',kw:'방과후 장소',  q:'放課後は、いつもどこで遊ぶことが多いですか？'},
-  {id:'10514',name:'성지민',kw:'일본 추천',   q:'If I visit Japan, what is one experience or culture I should try?'},
-  {id:'10517',name:'엄지원',kw:'한국생 이미지', q:'What kind of image comes to mind when you think of Korean students?'},
-  {id:'10620',name:'임지민',kw:'한국 음식',   q:'韓国の料理で何が好きですか？'},
-  {id:'10709',name:'김윤성',kw:'음악 취향',   q:'What kind of music do Japanese high school students usually listen to these days?'},
-  {id:'10728',name:'홍주희',kw:'학교생활 비교', q:'How is school life in Japan different from school life in Korea?'},
-  {id:'10901',name:'강민채',kw:'추천 도시',   q:'If a Korean friend visits Japan, which place or city would you recommend the most?'},
-  {id:'10916',name:'박해랑',kw:'학교 매점',   q:'日本の高校にも売店はありますか？あれば、おすすめメニューを教えてください！'},
-  {id:'10918',name:'심예원',kw:'학교 급식',   q:'What are school lunches like in Japan? Please share your favorite menu!'},
-  {id:'10923',name:'이태경',kw:'문화 충격',   q:'Have you ever felt a cultural difference when you came to Korea? If so, when did you feel it?'},
-  {id:'10927',name:'차설의',kw:'체육 대회',   q:'In South Korea, students order matching T-shirts for sports festivals. Does Japan have a similar culture?'},
-  {id:'20106',name:'김언수',kw:'애니·만화',   q:'好きなアニメや漫画は何？'},
-  {id:'20121',name:'허준태',kw:'생일 축하',   q:'日本の高校生は、友達の誕生日をどのようにお祝いすることが多いですか？'},
-  {id:'20213',name:'신지원',kw:'꿈',          q:'あなたの夢は何ですか？'},
-  {id:'20310',name:'박민욱',kw:'취미',        q:'What is your hobby?'},
-  {id:'20314',name:'이상원',kw:'일본 학교 자랑', q:'韓国の学生にも体験してほしい、日本独自の学校文化はありますか？'},
-  {id:'20407',name:'문예성',kw:'한국 첫인상',  q:'日本から韓国に初めて来たとき、日本と一番違うと感じたことは何でしたか？'},
-  {id:'20418',name:'정경훈',kw:'K-POP 관심',  q:'韓国のアイドルやアニメは好きですか？'},
-  {id:'20724',name:'최예승',kw:'학교 행사',   q:'What is your favorite school event?'},
-  {id:'20806',name:'김수현',kw:'학교 교칙',   q:'Are there any unique school rules, or rules that are different from those in Korea?'},
-  {id:'20825',name:'한설아',kw:'SNS 유행',    q:'最近、日本の高校生の間でTikTokで話題のチャレンジや流行している音楽は何ですか？'},
+  {id:'10124',name:'홍승표',kw:'将来の夢',         kwko:'장래의 꿈',
+   q:'将来、やってみたい仕事や興味のある分野はありますか？',
+   qko:'장래에 해보고 싶은 일이나 관심 있는 분야가 있나요?'},
+
+  {id:'10310',name:'서성원',kw:'Famous Landmark',  kwko:'유명한 명소',
+   q:'What do you think the most famous landmark is in Japan?',
+   qko:'일본에서 가장 유명한 랜드마크는 어디라고 생각하나요?'},
+
+  {id:'10322',name:'이현오',kw:'Korea Activities', kwko:'한국에서 할 것',
+   q:'What kind of activities do you want to do in Korea?',
+   qko:'한국에서 어떤 활동을 해보고 싶으신가요?'},
+
+  {id:'10415',name:'이선우',kw:'放課後の場所',      kwko:'방과후 장소',
+   q:'放課後は、いつもどこで遊ぶことが多いですか？',
+   qko:'방과후에는 주로 어디서 놀며 시간을 보내나요?'},
+
+  {id:'10514',name:'성지민',kw:'Japan Experience', kwko:'일본 체험',
+   q:'If I visit Japan, what is one experience or culture I should try?',
+   qko:'일본에 방문한다면 꼭 경험해야 할 문화나 활동이 있다면?'},
+
+  {id:'10517',name:'엄지원',kw:'Korean Students',  kwko:'한국 학생 이미지',
+   q:'What kind of image comes to mind when you think of Korean students?',
+   qko:'한국 학생을 떠올리면 어떤 이미지가 머릿속에 떠오르나요?'},
+
+  {id:'10620',name:'임지민',kw:'韓国料理',          kwko:'한국 음식',
+   q:'韓国の料理で何が好きですか？',
+   qko:'좋아하는 한국 음식이 있나요?'},
+
+  {id:'10709',name:'김윤성',kw:'Music Trends',     kwko:'음악 트렌드',
+   q:'What kind of music do Japanese high school students usually listen to these days?',
+   qko:'요즘 일본 고등학생들은 주로 어떤 음악을 즐겨 듣나요?'},
+
+  {id:'10728',name:'홍주희',kw:'School Life',      kwko:'학교생활 비교',
+   q:'How is school life in Japan different from school life in Korea?',
+   qko:'일본과 한국의 학교생활은 어떻게 다른가요?'},
+
+  {id:'10901',name:'강민채',kw:'Best City',        kwko:'추천 도시',
+   q:'If a Korean friend visits Japan, which place or city would you recommend the most?',
+   qko:'한국 친구가 일본에 온다면 가장 추천하고 싶은 도시나 장소는 어디인가요?'},
+
+  {id:'10916',name:'박해랑',kw:'学校の売店',        kwko:'학교 매점',
+   q:'日本の高校にも売店はありますか？あれば、おすすめメニューを教えてください！',
+   qko:'일본 고등학교에도 매점이 있나요? 있다면 추천 메뉴도 알려주세요!'},
+
+  {id:'10918',name:'심예원',kw:'School Lunch',     kwko:'학교 급식',
+   q:'What are school lunches like in Japan? Please share your favorite menu!',
+   qko:'일본의 학교 급식은 어떤가요? 가장 좋아하는 메뉴를 알려주세요!'},
+
+  {id:'10923',name:'이태경',kw:'Culture Shock',    kwko:'문화 충격',
+   q:'Have you ever felt a cultural difference when you came to Korea? If so, when did you feel it?',
+   qko:'한국에 왔을 때 문화 차이를 느낀 적이 있나요? 언제 가장 크게 느꼈나요?'},
+
+  {id:'10927',name:'차설의',kw:'Sports Festival',  kwko:'체육 대회',
+   q:'In South Korea, students order matching T-shirts for sports festivals. Does Japan have a similar culture?',
+   qko:'한국에서는 체육대회 때 단체 티셔츠를 맞추는데, 일본에도 비슷한 문화가 있나요?'},
+
+  {id:'20106',name:'김언수',kw:'アニメ・漫画',       kwko:'애니메이션·만화',
+   q:'好きなアニメや漫画は何？',
+   qko:'좋아하는 애니메이션이나 만화는 무엇인가요?'},
+
+  {id:'20121',name:'허준태',kw:'誕生日のお祝い',     kwko:'생일 축하 방식',
+   q:'日本の高校生は、友達の誕生日をどのようにお祝いすることが多いですか？',
+   qko:'일본 고등학생들은 친구 생일을 주로 어떻게 축하하나요?'},
+
+  {id:'20213',name:'신지원',kw:'夢',               kwko:'꿈',
+   q:'あなたの夢は何ですか？',
+   qko:'당신의 꿈은 무엇인가요?'},
+
+  {id:'20310',name:'박민욱',kw:'Hobby',            kwko:'취미',
+   q:'What is your hobby?',
+   qko:'취미가 무엇인가요?'},
+
+  {id:'20314',name:'이상원',kw:'日本の学校文化',      kwko:'일본 학교 문화',
+   q:'韓国の学生にも体験してほしい、日本独自の学校文化はありますか？',
+   qko:'한국 학생들에게도 경험시켜 주고 싶은 일본만의 학교 문화가 있나요?'},
+
+  {id:'20407',name:'문예성',kw:'韓国の第一印象',     kwko:'한국의 첫인상',
+   q:'日本から韓国に初めて来たとき、日本と一番違うと感じたことは何でしたか？',
+   qko:'일본에서 한국에 처음 왔을 때 가장 다르다고 느낀 점은 무엇이었나요?'},
+
+  {id:'20418',name:'정경훈',kw:'K-POPの関心',      kwko:'K-POP 관심도',
+   q:'韓国のアイドルやアニメは好きですか？',
+   qko:'한국 아이돌이나 애니메이션을 좋아하나요?'},
+
+  {id:'20724',name:'최예승',kw:'School Events',    kwko:'학교 행사',
+   q:'What is your favorite school event?',
+   qko:'가장 좋아하는 학교 행사는 무엇인가요?'},
+
+  {id:'20806',name:'김수현',kw:'School Rules',     kwko:'학교 교칙',
+   q:'Are there any unique school rules, or rules that are different from those in Korea?',
+   qko:'독특한 교칙이나 한국과 다른 교칙이 있나요?'},
+
+  {id:'20825',name:'한설아',kw:'SNSのトレンド',      kwko:'SNS 트렌드',
+   q:'最近、日本の高校生の間でTikTokで話題のチャレンジや流行している音楽は何ですか？',
+   qko:'최근 일본 고등학생들 사이에서 TikTok에서 화제인 챌린지나 유행하는 음악은 무엇인가요?'},
 ];
- 
+
 let answered=new Array(data.length).fill(false);
 let currentIdx=0;
- 
+
 function render(){
   const grid=document.getElementById('grid');
   grid.innerHTML='';
@@ -377,14 +344,17 @@ function render(){
       <div class="tack"></div>
       <div class="note-inner">
         <div class="note-num">Q${String(i+1).padStart(2,'0')}</div>
-        <div class="note-kw">${d.kw}</div>
+        <div class="note-kw-wrap">
+          <div class="note-kw">${d.kw}</div>
+          <div class="note-kw-ko">${d.kwko}</div>
+        </div>
       </div>
       <div class="check-stamp">✓</div>`;
     div.onclick=()=>openModal(i);
     grid.appendChild(div);
   });
 }
- 
+
 function openModal(idx){
   currentIdx=idx;
   const d=data[idx];
@@ -394,7 +364,7 @@ function openModal(idx){
   card.style.setProperty('--m-ac',c.ac);
   card.style.animation='none';card.offsetHeight;
   card.style.animation='cardIn .42s cubic-bezier(.22,1,.36,1) both';
- 
+
   document.getElementById('mNum').textContent=`Q ${String(idx+1).padStart(2,'0')}`;
   document.getElementById('mNum').style.color=c.ac;
   document.getElementById('mId').textContent=d.id;
@@ -403,40 +373,43 @@ function openModal(idx){
   document.getElementById('mLang').textContent=detectLang(d.q);
   document.getElementById('mLang').style.color=c.ac;
   document.getElementById('mQ').textContent=d.q;
- 
+  document.getElementById('mQko').textContent=d.qko;
+
   const ab=document.getElementById('answeredBtn');
   ab.classList.toggle('on',answered[idx]);
   ab.style.setProperty('--m-ac',c.ac);
   document.getElementById('modal').classList.add('open');
 }
- 
+
 function closeModal(){document.getElementById('modal').classList.remove('open')}
- 
 function toggleAnswered(){
   answered[currentIdx]=!answered[currentIdx];
   document.getElementById('answeredBtn').classList.toggle('on',answered[currentIdx]);
-  const notes=document.querySelectorAll('.note');
-  notes[currentIdx].classList.toggle('answered',answered[currentIdx]);
+  document.querySelectorAll('.note')[currentIdx].classList.toggle('answered',answered[currentIdx]);
 }
- 
+
 document.getElementById('modal').addEventListener('click',e=>{
   if(e.target===document.getElementById('modal'))closeModal();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
- 
+
+function esc(s){return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
 function openEdit(){
   const tbody=document.getElementById('editBody');
   tbody.innerHTML='';
-  data.forEach(d=>addEditRow(tbody,d.id,d.name,d.kw,d.q));
+  data.forEach(d=>addEditRow(tbody,d.id,d.name,d.kw,d.kwko,d.q,d.qko));
   document.getElementById('editOverlay').classList.add('open');
 }
-function addEditRow(tbody,id='',name='',kw='',q=''){
+function addEditRow(tbody,id='',name='',kw='',kwko='',q='',qko=''){
   const tr=document.createElement('tr');
   tr.innerHTML=`
-    <td><input class="e-id" value="${id}" placeholder="학번"></td>
-    <td><input class="e-name" value="${name}" placeholder="이름"></td>
-    <td><input class="e-kw" value="${kw.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" placeholder="키워드"></td>
-    <td><input class="e-q" value="${q.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" placeholder="질문"></td>
+    <td><input class="e-id"   value="${esc(id)}"   placeholder="학번"></td>
+    <td><input class="e-nm"   value="${esc(name)}"  placeholder="이름"></td>
+    <td><input class="e-kw"   value="${esc(kw)}"    placeholder="키워드"></td>
+    <td><input class="e-kwko" value="${esc(kwko)}"  placeholder="키워드(한국어)"></td>
+    <td><input class="e-q"    value="${esc(q)}"     placeholder="질문 원문"></td>
+    <td><input class="e-qko"  value="${esc(qko)}"   placeholder="질문 번역"></td>
     <td><button class="del-btn" onclick="this.closest('tr').remove()">✕</button></td>`;
   tbody.appendChild(tr);
 }
@@ -444,10 +417,12 @@ function addRow(){addEditRow(document.getElementById('editBody'))}
 function saveEdit(){
   const rows=document.querySelectorAll('#editBody tr');
   data=Array.from(rows).map(r=>({
-    id:r.querySelector('.e-id').value.trim(),
-    name:r.querySelector('.e-name').value.trim(),
-    kw:r.querySelector('.e-kw').value.trim(),
-    q:r.querySelector('.e-q').value.trim()
+    id:   r.querySelector('.e-id').value.trim(),
+    name: r.querySelector('.e-nm').value.trim(),
+    kw:   r.querySelector('.e-kw').value.trim(),
+    kwko: r.querySelector('.e-kwko').value.trim(),
+    q:    r.querySelector('.e-q').value.trim(),
+    qko:  r.querySelector('.e-qko').value.trim(),
   })).filter(d=>d.name||d.q);
   answered=new Array(data.length).fill(false);
   closeEdit();render();
@@ -456,9 +431,8 @@ function closeEdit(){document.getElementById('editOverlay').classList.remove('op
 document.getElementById('editOverlay').addEventListener('click',e=>{
   if(e.target===document.getElementById('editOverlay'))closeEdit();
 });
- 
+
 render();
 </script>
 </body>
 </html>
- 
